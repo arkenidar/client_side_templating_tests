@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<body>
+<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+
+function linkFetch(event){
+    var action = document.all.action_link.dataset.action
+    $.get('login_action.php?action='+action).done(init)
+}
+
+function logged(status){
+    var action
+    if(status=='in') action='logout'
+    else if(status=='out') action='login'
+    else{
+        console.log('login status not valid:', status)
+        return
+    }
+    document.all.login_manager.innerHTML='<button id=action_link onclick=linkFetch() data-action='+action+'>'+action+'</button>'
+    $('#out').load('private.php')
+}
+
+function init(){
+    $.get('logged.php').done(status => logged(status))
+}
+$(init())
+</script>
+<div id=login_manager></div>
+<div id=out></div>
+</body>
+</html>
